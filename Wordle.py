@@ -233,6 +233,7 @@ def play_best(corpus, true_word, distribution=None):
     print("--------------")
     return turn, guess_indices
 
+"""
 distribution = np.ones(len(lines))/len(lines)
 total_turns = 0
 for i in range(20):
@@ -240,7 +241,7 @@ for i in range(20):
     true = lines[rand_index]
     turns, _ = play_best(lines, true, distribution)
     total_turns += turns
-print(total_turns/20)
+print(total_turns/20)"""
 
 
 """
@@ -266,19 +267,20 @@ lines5, distribution = suggest_word(best_word, out, lines4, distribution)
 best_word = suggest_best(lines5)
 print("best next word is: " + best_word)"""
 
-"""
-distribution = np.ones(len(lines))/len(lines)
-lines2, distribution = suggest_word("cared", [0,0,1,0,0], lines, distribution)
-print("---------------")
 
-lines3, distribution = suggest_word("orbit", [1,2,0,0,0], lines2, distribution)
+distribution = np.ones(len(lines))/len(lines)
+lines2, distribution = suggest_word("cares", [0,0,1,0,0], lines, distribution)
+print("---------------")
+print(lines2)
+
+lines3, distribution = suggest_word("horny", [0,1,1,0,2], lines2, distribution)
 print(lines3)
 
 lines4, distribution = suggest_word("wrong", [0,2,2,0,0], lines3, distribution)
 print(lines4)
 rand_index = random.randint(0, len(lines4) - 1)
 guess = lines4[rand_index]
-print(guess)"""
+print(guess)
 
 """
 means, _ = initial_choices(lines, iters=100)
