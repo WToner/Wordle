@@ -123,7 +123,7 @@ def play_greedy(corpus, true_word, distribution=None):
     while sum(out) < 10:
         corpus, distribution = valid_corpus(guess,out, corpus, distribution)
         if len(corpus) < 300:
-            guess = suggest_best(corpus)
+            guess = suggest_greedy(corpus)
         else:
             guess = corpus[np.random.choice(np.arange(0, len(corpus)), p=distribution)]
         guess_indices.append(orig_corpus.index(guess))
@@ -211,11 +211,27 @@ def reverdle(true_word, guess_word):
 def main():
     parser = argparse.ArgumentParser(description='Arguments for Wordle')
     parser.add_argument('--true-word', type=str, default="hello", help='input the true word for the model to guess (default: hello)')
-    parser.add_argument('--weight-decay', type=float, default=0.02, metavar='N')
     args = parser.parse_args()
 
     lines = return_corpus()
 
+    distribution = np.ones(len(lines)) / len(lines)
+    total_turns = 0
+    for i in range(1000):
+        turns, guess_indices = play(lines, true_word=args.true_word, distribution=distribution)
+        total_turns += turns
+    print("Mean turns taken for " + str(args.true_word) + " using random strategy is: " + str(total_turns/1000))
+
+
+    distribution = np.ones(len(lines)) / len(lines)
+    total_turns = 0
+    for i in range(1000):
+        turns, guess_indices = play_greedy(lines, true_word=args.true_word, distribution=distribution)
+        total_turns += turns
+    print("Mean turns taken for " + str(args.true_word) + " using greedy stategy is: " + str(total_turns/1000))
+
+
+    """
     means, _ = initial_choices(lines, iters=100)
     means = np.array(means)
     lines = np.array(lines)
@@ -227,7 +243,7 @@ def main():
             print(lines[i], means[i])
             f.write(lines[i] + "   ")
             f.write(str(means[i]))
-            f.write("\n")
+            f.write("\n")"""
 
     """
     distribution = np.ones(len(lines))/len(lines)
