@@ -166,12 +166,12 @@ def suggest_greedy(corpus):
             new_corpus, _ = valid_corpus(sugg_word, out, corpus, distribution)
             corp_len += len(new_corpus)
         corpus_lengths.append(corp_len)
-    ind_max = np.argmin(np.array(corpus_lengths))
-    return corpus[ind_max]
+    ind_min = np.argmin(np.array(corpus_lengths))
+    return corpus[ind_min]
 
 """This function takes each initial guess and calculates the size of the resulting corpus after one
     round"""
-def initial_choices(corpus, iters=100):
+def initial_choices(corpus):
     distribution = np.ones(len(corpus)) / len(corpus)
     means = []
     stds = []
@@ -179,15 +179,16 @@ def initial_choices(corpus, iters=100):
         initial_word = corpus[i]
         corp_size = 0
         corp_size2 = 0
-        for j in range(iters):
+        print(corpus[i])
+        for j in range(len(corpus)):
             rand_index = random.randint(0, len(corpus)-1)
             true_word = corpus[rand_index]
             out = wordle(true_word, initial_word)
             new_corpus, _ = valid_corpus(initial_word, out, corpus, distribution)
             corp_size += len(new_corpus)
             corp_size2 += len(new_corpus)*len(new_corpus)
-        corp_var = corp_size2/iters - (corp_size/iters)**2
-        means.append(corp_size/iters)
+        corp_var = corp_size2/len(corpus) - (corp_size/len(corpus))**2
+        means.append(corp_size/len(corpus))
         stds.append(math.sqrt(corp_var))
     return means, stds
 
@@ -224,15 +225,11 @@ def main():
 
 
     distribution = np.ones(len(lines)) / len(lines)
-    total_turns = 0
-    for i in range(1000):
-        turns, guess_indices = play_greedy(lines, true_word=args.true_word, distribution=distribution)
-        total_turns += turns
-    print("Mean turns taken for " + str(args.true_word) + " using greedy stategy is: " + str(total_turns/1000))
+    turns, guess_indices = play_greedy(lines, true_word=args.true_word, distribution=distribution)
+    print("Mean turns taken for " + str(args.true_word) + " using greedy stategy is: " + str(turns))
 
 
-    """
-    means, _ = initial_choices(lines, iters=100)
+    means, _ = initial_choices(lines)
     means = np.array(means)
     lines = np.array(lines)
     sort_indices = means.argsort()
@@ -243,7 +240,7 @@ def main():
             print(lines[i], means[i])
             f.write(lines[i] + "   ")
             f.write(str(means[i]))
-            f.write("\n")"""
+            f.write("\n")
 
     """
     distribution = np.ones(len(lines))/len(lines)
