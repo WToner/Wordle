@@ -116,7 +116,8 @@ def play_greedy(corpus, true_word, distribution=None):
     orig_corpus = corpus.copy()
     guess_indices = []
     rand_index = np.random.choice(np.arange(0, len(corpus)), p=distribution)
-    guess = corpus[rand_index]
+    #guess = corpus[rand_index]
+    guess = "cares"
     guess_indices.append(rand_index)
     out = wordle(true_word, guess)
     turn = 1
@@ -215,6 +216,27 @@ def main():
     args = parser.parse_args()
 
     lines = return_corpus()
+    distribution = np.ones(len(lines))/len(lines)
+    #out = wordle("robot", "thief")
+    out = [1,0,1,1,0]
+    lines2, distribution = valid_corpus("chink", out, lines, distribution)
+
+    #best_word = suggest_greedy(lines2)
+    #print("best next word is: " + best_word)
+    print(lines2)
+
+    out = [0,2,2,2,2]
+    #out = wordle("robot", "court")
+    lines3, distribution = valid_corpus("mince", out, lines2, distribution)
+
+    #best_word = suggest_greedy(lines3)
+    #print("best next word is: " + best_word)
+    print(lines3)
+
+    out = wordle("robot", "roofy")
+    lines4, distribution = valid_corpus("roofy", out, lines3, distribution)
+
+    print(lines4)
 
     distribution = np.ones(len(lines)) / len(lines)
     total_turns = 0
@@ -226,6 +248,10 @@ def main():
 
     distribution = np.ones(len(lines)) / len(lines)
     turns, guess_indices = play_greedy(lines, true_word=args.true_word, distribution=distribution)
+    print("-----------")
+    for j in range(len(guess_indices)):
+        print(lines[guess_indices[j]])
+    print("-----------")
     print("Mean turns taken for " + str(args.true_word) + " using greedy stategy is: " + str(turns))
 
 

@@ -2057,6 +2057,10 @@ aback
     rides
     ridge
     rifle
+    rotor
+    roofy
+    sorbs
+    wince
     right
     rigid
     rings
