@@ -219,7 +219,7 @@ def main():
     distribution = np.ones(len(lines))/len(lines)
     #out = wordle("robot", "thief")
     out = [1,0,1,1,0]
-    lines2, distribution = valid_corpus("chink", out, lines, distribution)
+    lines2, distribution = valid_corpus("china", out, lines, distribution)
 
     #best_word = suggest_greedy(lines2)
     #print("best next word is: " + best_word)
